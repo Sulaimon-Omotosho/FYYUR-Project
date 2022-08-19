@@ -41,6 +41,7 @@ class Venue(db.Model):
     state = db.Column(db.String(120))
     address = db.Column(db.String(120))
     phone = db.Column(db.String(120))
+    genres = db.Column(db.String(120))
     image_link = db.Column(db.String(500))
     facebook_link = db.Column(db.String(120))
     website = db.Column(db.String(120))
@@ -241,7 +242,7 @@ def create_venue_submission():
     except Exception:
       db.session.rollback()
       print(sys.exc_info())
-      flash('An error occured. Venue' + 'could not be listed.')
+      flash('An error occured. Venue ' + 'could not be listed.')
       
     finally:
       db.session.close()
