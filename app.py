@@ -232,7 +232,7 @@ def create_venue_submission():
             image_link=form.image_link.data,
             seeking_talent=form.seeking_talent.data,
             seeking_description=form.seeking_description.data,
-            website=form.website.data
+            website=form.website_link.data
           )
           db.session.add(new_venue)
           db.session.commit()
@@ -389,7 +389,7 @@ def edit_artist_submission(artist_id):
       artist.image_link=form.image_link.data
       artist.seeking_venue=form.seeking_venue.data
       artist.seeking_description=form.seeking_description.data
-      artist.website=form.website.data
+      artist.website=form.website_link.data
       
       db.session.add(artist)
       db.session.commit()
@@ -436,7 +436,7 @@ def edit_venue_submission(venue_id):
             venue.image_link=form.image_link.data
             venue.seeking_talent=form.seeking_talent.data
             venue.seeking_description=form.seeking_description.data
-            venue.website=form.website.data
+            venue.website=form.website_link.data
 
             db.session.add(venue)
             db.session.commit()
@@ -478,7 +478,7 @@ def create_artist_submission():
                 genres=",".join(form.genres.data), # convert array to string separated by commas
                 image_link=form.image_link.data,
                 facebook_link=form.facebook_link.data,
-                website=form.website.data,
+                website=form.website_link.data,
                 seeking_venue=form.seeking_venue.data,
                 seeking_description=form.seeking_description.data,
             )
