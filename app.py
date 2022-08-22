@@ -9,11 +9,13 @@ import babel
 from flask import Flask, render_template, request, Response, flash, redirect, url_for
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import SQLAlchemyError
 import logging
 from logging import Formatter, FileHandler
 from flask_wtf import Form
 from flask_migrate import Migrate
 from forms import *
+
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -218,38 +220,38 @@ def create_venue_submission():
   # TODO: modify data to be the data object returned from db insertion
 
   if form.validate():
-    try:
-      new_venue = Venue(
-        name=form.name.data,
-        city=form.city.data,
-        state=form.state.data,
-        address=form.address.data,
-        phone=form.phone.data,
-        genres=','.join(form.genres.data),
-        facebook_link=form.facebook_link.data,
-        image_link=form.image_link.data,
-        seeking_talent=form.seeking_talent.data,
-        seeking_description=form.seeking_description.data,
-        website=form.website.data
-      )
-      db.session.add(new_venue)
-      db.session.commit()
+      try:
+          new_venue = Venue(
+            name=form.name.data,
+            city=form.city.data,
+            state=form.state.data,
+            address=form.address.data,
+            phone=form.phone.data,
+            genres=",".join(form.genres.data), # convert array to string separated by commas
+            facebook_link=form.facebook_link.data,
+            image_link=form.image_link.data,
+            seeking_talent=form.seeking_talent.data,
+            seeking_description=form.seeking_description.data,
+            website=form.website.data
+          )
+          db.session.add(new_venue)
+          db.session.commit()
 
   # on successful db insert, flash success
-      flash('venue ' + request.form['name'] + ' was successfully listed!')
+          flash('Venue ' + request.form['name'] + ' was successfully listed!')
  
   # TODO: on unsuccessful db insert, flash an error instead.
-    except Exception:
-      db.session.rollback()
-      print(sys.exc_info())
-      flash('An error occured. Venue ' + 'could not be listed.')
+      except Exception:
+          db.session.rollback()
+          print(sys.exc_info())
+          flash('An error occured. Venue ' + request.form['name'] + ' could not be listed.')
       
-    finally:
-      db.session.close()
+      finally:
+          db.session.close()
       
   else:
     print('\n\n', form.errors)
-    flash('An error occured. Venue' + 'could not be listed')
+    flash('An error occured. Venue ' + 'could not be listed')
     
   # e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
   # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
