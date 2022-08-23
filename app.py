@@ -122,7 +122,7 @@ def show_venue(venue_id):
   # setattr(venue, "genres", venue.genres.split(","))
   
   # get past shows
-  past_shows = list(filter(lambda show: show.start_time < datetime.now(), venue.shows))
+  past_shows = db.session.query(Show).join(Venue).filter(Show.venue_id==venue_id).filter(Show.start_time < datetime.now()).all()
   temp_shows = []
   for show in past_shows:
       temp = {}
@@ -136,7 +136,7 @@ def show_venue(venue_id):
   setattr(venue,"past_shows_count", len(past_shows))
 
   # get future shows
-  upcoming_shows = list(filter(lambda show: show.start_time > datetime.now(), venue.shows))
+  upcoming_shows = db.session.query(Show).join(Venue).filter(Show.venue_id==venue_id).filter(Show.start_time > datetime.now()).all()
   temp_shows = []
   for show in upcoming_shows:
       temp = {}
@@ -275,7 +275,7 @@ def show_artist(artist_id):
   # setattr(artist, "genres", artist.genres.split(",")) # convert genre string back to array
 
     # get past shows
-  past_shows = list(filter(lambda show: show.start_time < datetime.now(), artist.shows))
+  past_shows = db.session.query(Show).join(Artist).filter(Show.artist_id==artist_id).filter(Show.start_time < datetime.now()).all()
   temp_shows = []
   for show in past_shows:
       temp = {}
@@ -291,7 +291,8 @@ def show_artist(artist_id):
 
 
     # get upcoming shows
-  upcoming_shows = list(filter(lambda show: show.start_time > datetime.now(), artist.shows))
+  # upcoming_shows = list(filter(lambda show: show.start_time > datetime.now(), artist.shows))
+  upcoming_shows = db.session.query(Show).join(Artist).filter(Show.artist_id==artist_id).filter(Show.start_time > datetime.now()).all()
   temp_shows = []
   for show in upcoming_shows:
       temp = {}
